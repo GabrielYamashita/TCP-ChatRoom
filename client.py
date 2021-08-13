@@ -7,15 +7,15 @@ if nickname.lower() == 'admin':
    password = input("Password for Admin: ")
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = '127.0.0.1' #localhost
-port = 55555
+host = '192.168.0.14' #localhost
+port = 9090
 client.connect((host, port))
 
 stop_thread = False
 
 def receive():
    while True:
-      global(stop_thread)
+      global stop_thread
       if stop_thread:
          break
 
@@ -32,6 +32,11 @@ def receive():
                   print("Connection was refused! Wrong admin password.")
                   stop_thread = True
 
+            elif next_message == 'BAN':
+               print("Connection refused, because of ban!")
+               client.close()
+               stop_thread = True
+
          else:
             print(message)
 
@@ -45,7 +50,7 @@ def write():
       if stop_thread:
          break
 
-      message = f'{nickname}: {input("")}'
+      message = f'{nickname}: {input()}'
       if message[len(nickname)+2:].startswith('/'):
          if nickname == 'admin':
             if message[len(nickname)+2:].startswith('/kick'):
