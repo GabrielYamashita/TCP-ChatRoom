@@ -1,5 +1,5 @@
-import threading
 import socket
+import threading
 
 host = '127.0.0.1' #localhost
 port = 55555
@@ -43,8 +43,10 @@ def receive():
       print(f"Nickname of the Client is {nickname}.")
       broadcast(f'{nickname} joined the chat'.encode('ascii'))
       client.send("Connected to the Server!".encode('ascii'))
+      print("")
 
       thread = threading.Thread(target=handle, args=(client,))
       thread.start()
 
+print("Server is Listening...")
 receive( )
